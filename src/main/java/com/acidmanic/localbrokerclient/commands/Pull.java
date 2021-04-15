@@ -14,7 +14,6 @@ import com.acidmanic.localbrokerclient.models.pact.Contract;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
-import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.List;
 import kong.unirest.HttpResponse;
@@ -41,7 +40,7 @@ public class Pull extends ApplicationCommandBase {
             errorPostFix = ": " + e.getClass().getSimpleName();
 
         }
-        if (response != null && response.getStatus() == 200) {
+        if (response != null && response.isSuccess()) {
 
             PactDto dto = response.getBody();
 
@@ -64,7 +63,7 @@ public class Pull extends ApplicationCommandBase {
 
         error("Problem receiving pacts from broker" + errorPostFix);
         applicationContext.fail();
-
+        Unirest.shutDown();
     }
 
     @Override
