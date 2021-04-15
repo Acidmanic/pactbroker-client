@@ -40,7 +40,7 @@ public class Main {
 
         CommandFactory factory = new CommandFactory(registery, logger, context);
 
-        HashMap<Command, String[]> commands = factory.make(args);
+        HashMap<Command, String[]> commands = factory.make(args,true);
 
         commands.forEach((c, ar) -> c.execute(ar));
 

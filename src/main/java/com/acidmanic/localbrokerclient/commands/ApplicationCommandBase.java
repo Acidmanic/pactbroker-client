@@ -12,6 +12,7 @@ import com.acidmanic.localbrokerclient.commands.arguments.ArgumentsContext;
 import com.acidmanic.localbrokerclient.commands.arguments.Root;
 import com.acidmanic.localbrokerclient.commands.arguments.Server;
 import com.acidmanic.localbrokerclient.commands.arguments.Token;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
@@ -46,4 +47,28 @@ public abstract class ApplicationCommandBase extends FractalCommandBase<Argument
 
     protected abstract void execute(ApplicationContext applicationContext, ArgumentsContext argumentsContext);
 
+    protected <T> T toObject(String json, Class<T> type) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+
+            T value = (T) mapper.readValue(json, type);
+
+            return value;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    protected String toJson(Object value) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+
+            String jsonString = mapper.writeValueAsString(value);
+
+            return jsonString;
+        } catch (Exception e) {
+        }
+        return null;
+    }
 }
