@@ -5,10 +5,18 @@
  */
 package com.acidmanic.localbrokerclient.commands;
 
+import com.acidmanic.io.file.FileIOHelper;
 import com.acidmanic.localbrokerclient.commands.arguments.ArgumentsContext;
-import com.acidmanic.localbrokerclient.models.Dto;
+import com.acidmanic.localbrokerclient.commands.utility.ContractHelper;
 import com.acidmanic.localbrokerclient.models.Pact;
 import com.acidmanic.localbrokerclient.models.PactDto;
+import com.acidmanic.localbrokerclient.models.pact.Contract;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.List;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 
@@ -22,27 +30,34 @@ public class Pull extends ApplicationCommandBase {
     protected void execute(ApplicationContext applicationContext, ArgumentsContext argumentsContext) {
 
         String errorPostFix = "";
-        HttpResponse<String> response = null;
+        HttpResponse<PactDto> response = null;
 
         try {
             response = Unirest
                     .get(argumentsContext.getServer() + "/pull")
                     .header("token", argumentsContext.getToken())
-                    .asString();
+                    .asObject(PactDto.class);
         } catch (Exception e) {
             errorPostFix = ": " + e.getClass().getSimpleName();
-        }
 
+        }
         if (response != null && response.getStatus() == 200) {
 
-            String json = response.getBody();
-
-            PactDto dto = toObject(json, PactDto.class);
+            PactDto dto = response.getBody();
 
             if (dto != null && !dto.isFailure() && dto.getModel() != null) {
+
                 info("Pacts are received from broker");
 
                 Pact pact = dto.getModel();
+
+                boolean success = saveAllContracts(pact.getContracts(), argumentsContext.getRoot());
+
+                if (success) {
+                    info("App Pact contracts successfully fetched from server.");
+                    return;
+                }
+                errorPostFix += " - Problem saving pacts into disk.";
             }
 
         }
@@ -55,6 +70,49 @@ public class Pull extends ApplicationCommandBase {
     @Override
     protected String getUsageDescription() {
         return "This command uploads given pact files into pact broker server.";
+    }
+
+    private boolean saveAllContracts(List<Contract> contracts, File root) {
+
+        HashMap<String, Contract> mergedContracts = new ContractHelper(getLogger())
+                .mergeByVersion(contracts);
+
+        root.mkdirs();
+
+        boolean success = true;
+
+        for (String version : mergedContracts.keySet()) {
+
+            File file = root.toPath().resolve(version + ".json").toFile();
+
+            Contract contract = mergedContracts.get(version);
+
+            success = success & save(contract, file);
+
+        }
+        return success;
+    }
+
+    private boolean save(Contract contract, File file) {
+        try {
+
+            if (file.exists()) {
+                file.delete();
+            }
+            Gson gson = new GsonBuilder()
+                    .disableHtmlEscaping()
+                    .create();
+
+            String json = gson.toJson(contract);
+
+            new FileIOHelper().tryWriteAll(file, json);
+
+            return true;
+
+        } catch (Exception e) {
+            
+        }
+        return false;
     }
 
 }
