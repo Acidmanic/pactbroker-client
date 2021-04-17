@@ -36,7 +36,17 @@ public abstract class ApplicationCommandBase extends FractalCommandBase<Argument
 
         ApplicationContext applicationContext = getContext();
 
-        execute(applicationContext, argumentsContext);
+        boolean succeed = validateArguments(argumentsContext);
+
+        if (succeed) {
+            
+            execute(applicationContext, argumentsContext);
+        } else {
+            
+            error("Entered Arguments are not correct.");
+            
+            applicationContext.fail();
+        }
     }
 
     @Override
@@ -45,4 +55,33 @@ public abstract class ApplicationCommandBase extends FractalCommandBase<Argument
     }
 
     protected abstract void execute(ApplicationContext applicationContext, ArgumentsContext argumentsContext);
+
+    private boolean validateArguments(ArgumentsContext argumentsContext) {
+        if(argumentsContext.getRoot()==null){
+            return false;
+        }
+        if(!argumentsContext.getRoot().exists()){
+            
+            argumentsContext.getRoot().mkdirs();
+            
+            warning("Root directory created.");
+        }
+        if(!argumentsContext.getRoot().isDirectory()){
+            error("Root argument should address a directory");
+            return false;
+        }
+        if(argumentsContext.getServer()==null){
+            return false;
+        }
+        if(argumentsContext.getServer().length()<1){
+            return false;
+        }
+        if(argumentsContext.getToken()==null){
+            return false;
+        }
+        if(argumentsContext.getToken().length()<1){
+            return false;
+        }
+        return true;
+    }
 }
