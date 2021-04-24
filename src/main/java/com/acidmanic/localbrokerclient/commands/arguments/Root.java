@@ -17,8 +17,10 @@ public class Root extends ArgumentBase {
     protected void execute(ArgumentsContext context, String argument) {
         File file = new File(argument);
 
-        if (!file.exists() || !file.isDirectory()) {
-            error(this.getClass().getSimpleName() + " takes a directory path.");
+        try {
+            file.mkdirs();
+        } catch (Exception e) {
+            error("Unable to create root directory: " + e.getClass().getSimpleName());
             return;
         }
 
