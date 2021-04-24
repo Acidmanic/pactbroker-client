@@ -10,7 +10,7 @@ import com.acidmanic.localbrokerclient.commands.arguments.ArgumentsContext;
 import com.acidmanic.localbrokerclient.commands.utility.ContractHelper;
 import com.acidmanic.localbrokerclient.models.Pact;
 import com.acidmanic.localbrokerclient.models.PactDto;
-import com.acidmanic.localbrokerclient.models.pact.Contract;
+import com.acidmanic.pactmodels.Contract;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;

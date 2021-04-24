@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,12 +8,12 @@ package com.acidmanic.localbrokerclient.commands.utility;
 
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.lightweight.logger.SilentLogger;
-import com.acidmanic.localbrokerclient.models.pact.Consumer;
-import com.acidmanic.localbrokerclient.models.pact.Contract;
-import com.acidmanic.localbrokerclient.models.pact.Interaction;
-import com.acidmanic.localbrokerclient.models.pact.Metadata;
-import com.acidmanic.localbrokerclient.models.pact.PactSpecification;
-import com.acidmanic.localbrokerclient.models.pact.Provider;
+import com.acidmanic.pactmodels.Consumer;
+import com.acidmanic.pactmodels.Contract;
+import com.acidmanic.pactmodels.Interaction;
+import com.acidmanic.pactmodels.Metadata;
+import com.acidmanic.pactmodels.PactSpecification;
+import com.acidmanic.pactmodels.Provider;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

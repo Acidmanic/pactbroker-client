@@ -6,7 +6,7 @@
 package com.acidmanic.localbrokerclient.models;
 
 
-import com.acidmanic.localbrokerclient.models.pact.Contract;
+import com.acidmanic.pactmodels.Contract;
 import java.util.List;
 
 /**
