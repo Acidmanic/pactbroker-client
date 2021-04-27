@@ -74,7 +74,7 @@ public class Pull extends ApplicationCommandBase {
     private boolean saveAllContracts(List<Contract> contracts, File root) {
 
         HashMap<String, Contract> mergedContracts = new ContractHelper(getLogger())
-                .mergeByVersion(contracts);
+                .mergeByProvider(contracts);
 
         root.mkdirs();
 

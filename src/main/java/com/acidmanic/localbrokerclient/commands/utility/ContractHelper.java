@@ -34,22 +34,27 @@ public class ContractHelper {
         this.logger = logger;
     }
 
-    public HashMap<String, Contract> mergeByVersion(List<Contract> contracts) {
+    public HashMap<String, Contract> mergeByProvider(List<Contract> contracts) {
 
         HashMap<String, List<Contract>> groups = new HashMap<>();
 
         for (Contract c : contracts) {
-            String version = tryGetVersion(c);
-            if (version == null) {
+
+            String provider = tryGetProvider(c);
+
+            if (provider == null) {
+                
                 this.logger.warning("Contract without version has been ignored.");
             } else {
-                version = version.toLowerCase();
+                
+                provider = provider.toLowerCase();
 
-                if (!groups.containsKey(version)) {
-                    groups.put(version, new ArrayList<>());
+                if (!groups.containsKey(provider)) {
+                    
+                    groups.put(provider, new ArrayList<>());
                 }
 
-                List<Contract> groupContracts = groups.get(version);
+                List<Contract> groupContracts = groups.get(provider);
 
                 groupContracts.add(c);
             }
@@ -62,7 +67,16 @@ public class ContractHelper {
         return mergedContracts;
     }
 
-    private String tryGetVersion(Contract c) {
+    private String tryGetProvider(Contract c) {
+        Provider provider = c.getProvider();
+
+        if (provider != null) {
+            return provider.getName();
+        }
+        return null;
+    }
+
+    private String tryGetPactVersion(Contract c) {
         if (c.getMetadata() != null) {
             if (c.getMetadata().getPactSpecification() != null) {
                 String version = c.getMetadata().getPactSpecification().getVersion();
@@ -74,9 +88,9 @@ public class ContractHelper {
         return null;
     }
 
-    private Contract merge(String version, List<Contract> contracts) {
+    private Contract merge(String provider, List<Contract> contracts) {
 
-        Contract contract = newMergedContract(version);
+        Contract contract = newMergedContract(provider);
 
         ArrayList<Interaction> interactions = new ArrayList<>();
 
@@ -87,7 +101,7 @@ public class ContractHelper {
         return contract;
     }
 
-    private Contract newMergedContract(String version) {
+    private Contract newMergedContract(String providerName) {
         Contract contract = new Contract();
 
         Consumer consumer = new Consumer();
@@ -98,7 +112,7 @@ public class ContractHelper {
 
         PactSpecification pactSpecification = new PactSpecification();
 
-        pactSpecification.setVersion(version);
+        pactSpecification.setVersion("3.0.0");
 
         Metadata metadata = new Metadata();
 
@@ -108,7 +122,7 @@ public class ContractHelper {
 
         Provider provider = new Provider();
 
-        provider.setName("Server");
+        provider.setName(providerName);
 
         contract.setProvider(provider);
 

@@ -42,6 +42,7 @@ public class Push extends ApplicationCommandBase {
 
         pact.setContracts(contracts);
 
+        String errorString = "";
         try {
             HttpResponse<ResultDto> response = Unirest.post(argumentsContext.getServer() + "/push")
                     .header("token", argumentsContext.getToken())
@@ -52,13 +53,14 @@ public class Push extends ApplicationCommandBase {
             if (response != null && response.isSuccess()) {
 
                 info(contracts.size() + " Contracts uploaded to pact broker server successfully.");
-                
+
                 return;
             }
         } catch (Exception e) {
+            errorString = "\nError: " + e.getClass().getSimpleName();
         }
-        
-        error("Unable to upload pact contracts to broker server.");
+
+        error("Unable to upload pact contracts to broker server." + errorString);
         applicationContext.fail();
         Unirest.shutDown();
     }
