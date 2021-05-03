@@ -5,6 +5,8 @@
  */
 package com.acidmanic.localbrokerclient.models;
 
+import com.acidmanic.pact.models.Pact;
+
 /**
  *
  * @author diego
