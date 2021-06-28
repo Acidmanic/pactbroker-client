@@ -11,7 +11,7 @@ import com.acidmanic.localbrokerclient.commands.utility.DirectoryScanner;
 import com.acidmanic.localbrokerclient.models.ResultDto;
 import com.acidmanic.pact.models.Pact;
 import com.acidmanic.pactmodels.Contract;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,14 +75,16 @@ public class Push extends ApplicationCommandBase {
         if (file.getName().toLowerCase().endsWith(".json")) {
 
             try {
-                Gson gson = new Gson();
+
+                ObjectMapper mapper = new ObjectMapper();
 
                 String json = new FileIOHelper().tryReadAllText(file);
 
                 Contract contract = null;
 
                 if (json != null && json.length() > 0) {
-                    contract = gson.fromJson(json, Contract.class);
+                    
+                    contract = mapper.readValue(file, Contract.class);
                 }
                 if (contract != null) {
                     contracts.add(contract);
