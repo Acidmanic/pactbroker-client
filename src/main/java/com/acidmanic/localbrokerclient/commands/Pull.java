@@ -11,13 +11,16 @@ import com.acidmanic.localbrokerclient.commands.utility.ContractHelper;
 import com.acidmanic.localbrokerclient.models.PactDto;
 import com.acidmanic.pact.models.Pact;
 import com.acidmanic.pactmodels.Contract;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import kong.unirest.HttpResponse;
+import kong.unirest.JsonObjectMapper;
 import kong.unirest.Unirest;
+import kong.unirest.jackson.JacksonObjectMapper;
 
 /**
  *
@@ -31,6 +34,8 @@ public class Pull extends ApplicationCommandBase {
         String errorPostFix = "";
         HttpResponse<PactDto> response = null;
 
+        Unirest.config().setObjectMapper(new JacksonObjectMapper());
+        
         try {
             response = Unirest
                     .get(argumentsContext.getServer() + "/pull")
@@ -98,11 +103,9 @@ public class Pull extends ApplicationCommandBase {
             if (file.exists()) {
                 file.delete();
             }
-            Gson gson = new GsonBuilder()
-                    .disableHtmlEscaping()
-                    .create();
+            ObjectMapper mapper = new ObjectMapper();
 
-            String json = gson.toJson(contract);
+            String json = mapper.writeValueAsString(contract);
 
             new FileIOHelper().tryWriteAll(file, json);
 
