@@ -12,13 +12,10 @@ import com.acidmanic.localbrokerclient.models.PactDto;
 import com.acidmanic.pact.models.Pact;
 import com.acidmanic.pactmodels.Contract;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import kong.unirest.HttpResponse;
-import kong.unirest.JsonObjectMapper;
 import kong.unirest.Unirest;
 import kong.unirest.jackson.JacksonObjectMapper;
 
@@ -73,7 +70,7 @@ public class Pull extends ApplicationCommandBase {
 
     @Override
     protected String getUsageDescription() {
-        return "This command uploads given pact files into pact broker server.";
+        return "This command downloads available pact files from pact broker server.";
     }
 
     private boolean saveAllContracts(List<Contract> contracts, File root) {

@@ -67,7 +67,7 @@ public class Push extends ApplicationCommandBase {
 
     @Override
     protected String getUsageDescription() {
-        return "This command downloads available pact files from pact broker server.";
+        return "This command uploads given pact files into pact broker server.";
     }
 
     private void scanForContract(File file, List<Contract> contracts) {
