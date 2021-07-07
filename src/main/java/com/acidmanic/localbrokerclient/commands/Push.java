@@ -15,7 +15,7 @@ import kong.unirest.Unirest;
  *
  * @author diego
  */
-public class Push extends UploaderCommandBase {
+public class Push extends PactIOCommandBase {
 
     @Override
     protected void execute(ApplicationContext applicationContext, ArgumentsContext argumentsContext) {

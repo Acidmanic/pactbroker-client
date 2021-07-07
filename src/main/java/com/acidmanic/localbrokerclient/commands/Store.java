@@ -17,7 +17,7 @@ import kong.unirest.Unirest;
  *
  * @author diego
  */
-public class Store extends UploaderCommandBase {
+public class Store extends PactIOCommandBase {
 
     @Override
     protected void addArgumentClasses(TypeRegistery reg) {

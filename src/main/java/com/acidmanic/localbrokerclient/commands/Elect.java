@@ -5,7 +5,9 @@
  */
 package com.acidmanic.localbrokerclient.commands;
 
+import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.localbrokerclient.commands.arguments.ArgumentsContext;
+import com.acidmanic.localbrokerclient.commands.arguments.Tag;
 import com.acidmanic.localbrokerclient.models.PactDto;
 import com.acidmanic.pact.models.Pact;
 import kong.unirest.HttpResponse;
@@ -16,8 +18,19 @@ import kong.unirest.jackson.JacksonObjectMapper;
  *
  * @author diego
  */
-public class Pull extends PactIOCommandBase {
+public class Elect extends PactIOCommandBase {
 
+    @Override
+    protected void addArgumentClasses(TypeRegistery reg) {
+        
+        super.addArgumentClasses(reg); 
+        
+        reg.registerClass(Tag.class);
+    }
+
+    
+    
+    
     @Override
     protected void execute(ApplicationContext applicationContext, ArgumentsContext argumentsContext) {
 
@@ -25,10 +38,10 @@ public class Pull extends PactIOCommandBase {
         HttpResponse<PactDto> response = null;
 
         Unirest.config().setObjectMapper(new JacksonObjectMapper());
-        
+
         try {
             response = Unirest
-                    .get(argumentsContext.getServer() + "/pull")
+                    .get(argumentsContext.getServer() + "/elect/" + argumentsContext.getTag())
                     .header("token", argumentsContext.getToken())
                     .asObject(PactDto.class);
         } catch (Exception e) {
@@ -63,9 +76,9 @@ public class Pull extends PactIOCommandBase {
 
     @Override
     protected String getUsageDescription() {
-        return "This command downloads available pact files from pact broker server.";
+        return "This command chooses previousely uploaded (stored) pacts with given tag, "
+                + "as current pact collection to be delivered from brocker. It also "
+                + "downloads and saves selected pact collection at root directory.";
     }
-
-    
 
 }
