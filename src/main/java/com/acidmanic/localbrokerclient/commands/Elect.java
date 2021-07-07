@@ -41,7 +41,7 @@ public class Elect extends PactIOCommandBase {
 
         try {
             response = Unirest
-                    .get(argumentsContext.getServer() + "/elect/" + argumentsContext.getTag())
+                    .put(argumentsContext.getServer() + "/elect/" + argumentsContext.getTag())
                     .header("token", argumentsContext.getToken())
                     .asObject(PactDto.class);
         } catch (Exception e) {

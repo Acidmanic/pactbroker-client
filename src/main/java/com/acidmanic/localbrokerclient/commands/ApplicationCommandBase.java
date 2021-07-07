@@ -6,11 +6,8 @@
 package com.acidmanic.localbrokerclient.commands;
 
 import com.acidmanic.commandline.commands.FractalCommandBase;
-import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.localbrokerclient.commands.arguments.ArgumentsContext;
-import com.acidmanic.localbrokerclient.commands.arguments.Root;
-import com.acidmanic.localbrokerclient.commands.arguments.Server;
 import com.acidmanic.localbrokerclient.commands.arguments.Token;
 
 /**
@@ -21,14 +18,8 @@ public abstract class ApplicationCommandBase extends FractalCommandBase<Argument
 
     @Override
     protected void addArgumentClasses(TypeRegistery reg) {
-
-        reg.registerClass(Root.class);
-
-        reg.registerClass(Server.class);
-
+        
         reg.registerClass(Token.class);
-
-        reg.registerClass(Help.class);
     }
 
     @Override

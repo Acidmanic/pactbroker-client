@@ -5,8 +5,12 @@
  */
 package com.acidmanic.localbrokerclient.commands;
 
+import com.acidmanic.commandline.commands.Help;
+import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.io.file.FileIOHelper;
 import com.acidmanic.localbrokerclient.commands.arguments.ArgumentsContext;
+import com.acidmanic.localbrokerclient.commands.arguments.Root;
+import com.acidmanic.localbrokerclient.commands.arguments.Server;
 import com.acidmanic.localbrokerclient.commands.utility.ContractHelper;
 import com.acidmanic.localbrokerclient.commands.utility.DirectoryScanner;
 import com.acidmanic.pact.models.Pact;
@@ -22,6 +26,18 @@ import java.util.List;
  * @author diego
  */
 public abstract class PactIOCommandBase extends ApplicationCommandBase {
+    
+    @Override
+    protected void addArgumentClasses(TypeRegistery reg) {
+
+        super.addArgumentClasses(reg);
+        
+        reg.registerClass(Root.class);
+
+        reg.registerClass(Server.class);
+
+        reg.registerClass(Help.class);
+    }
 
     protected Pact getAvailablePacts(ArgumentsContext argumentsContext) {
         List<Contract> contracts = new ArrayList<>();
