@@ -17,6 +17,7 @@ public class ArgumentsContext implements ExecutionContext {
     private File root;
     private String server;
     private String token;
+    private String tag;
 
     public File getRoot() {
         return root;
@@ -40,6 +41,14 @@ public class ArgumentsContext implements ExecutionContext {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
 }
