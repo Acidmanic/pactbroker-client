@@ -12,8 +12,11 @@ import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.lightweight.logger.ConsoleLogger;
 import com.acidmanic.lightweight.logger.Logger;
 import com.acidmanic.localbrokerclient.commands.ApplicationContext;
+import com.acidmanic.localbrokerclient.commands.Elect;
 import com.acidmanic.localbrokerclient.commands.Pull;
 import com.acidmanic.localbrokerclient.commands.Push;
+import com.acidmanic.localbrokerclient.commands.Store;
+import com.acidmanic.localbrokerclient.commands.Tags;
 import java.util.Map;
 
 /**
@@ -33,6 +36,10 @@ public class Main {
         registery.registerClass(Push.class);
 
         registery.registerClass(Help.class);
+        
+        registery.registerClass(Store.class);
+        registery.registerClass(Elect.class);
+        registery.registerClass(Tags.class);
 
         ApplicationContext context = new ApplicationContext();
 
