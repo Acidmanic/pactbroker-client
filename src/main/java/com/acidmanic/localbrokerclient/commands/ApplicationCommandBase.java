@@ -6,8 +6,10 @@
 package com.acidmanic.localbrokerclient.commands;
 
 import com.acidmanic.commandline.commands.FractalCommandBase;
+import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.localbrokerclient.commands.arguments.ArgumentsContext;
+import com.acidmanic.localbrokerclient.commands.arguments.Server;
 import com.acidmanic.localbrokerclient.commands.arguments.Token;
 
 /**
@@ -20,6 +22,10 @@ public abstract class ApplicationCommandBase extends FractalCommandBase<Argument
     protected void addArgumentClasses(TypeRegistery reg) {
         
         reg.registerClass(Token.class);
+        
+        reg.registerClass(Server.class);
+
+        reg.registerClass(Help.class);
     }
 
     @Override
@@ -47,20 +53,9 @@ public abstract class ApplicationCommandBase extends FractalCommandBase<Argument
 
     protected abstract void execute(ApplicationContext applicationContext, ArgumentsContext argumentsContext);
 
-    private boolean validateArguments(ArgumentsContext argumentsContext) {
-        if(argumentsContext.getRoot()==null){
-            return false;
-        }
-        if(!argumentsContext.getRoot().exists()){
-            
-            argumentsContext.getRoot().mkdirs();
-            
-            warning("Root directory created.");
-        }
-        if(!argumentsContext.getRoot().isDirectory()){
-            error("Root argument should address a directory");
-            return false;
-        }
+    protected boolean validateArguments(ArgumentsContext argumentsContext) {
+        
+        
         if(argumentsContext.getServer()==null){
             return false;
         }

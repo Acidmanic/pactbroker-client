@@ -5,12 +5,10 @@
  */
 package com.acidmanic.localbrokerclient.commands;
 
-import com.acidmanic.commandline.commands.Help;
 import com.acidmanic.commandline.commands.TypeRegistery;
 import com.acidmanic.io.file.FileIOHelper;
 import com.acidmanic.localbrokerclient.commands.arguments.ArgumentsContext;
 import com.acidmanic.localbrokerclient.commands.arguments.Root;
-import com.acidmanic.localbrokerclient.commands.arguments.Server;
 import com.acidmanic.localbrokerclient.commands.utility.ContractHelper;
 import com.acidmanic.localbrokerclient.commands.utility.DirectoryScanner;
 import com.acidmanic.pact.models.Pact;
@@ -26,17 +24,39 @@ import java.util.List;
  * @author diego
  */
 public abstract class PactIOCommandBase extends ApplicationCommandBase {
-    
+
     @Override
     protected void addArgumentClasses(TypeRegistery reg) {
 
         super.addArgumentClasses(reg);
-        
+
         reg.registerClass(Root.class);
+    }
 
-        reg.registerClass(Server.class);
+    @Override
+    protected boolean validateArguments(ArgumentsContext argumentsContext) {
 
-        reg.registerClass(Help.class);
+        if (super.validateArguments(argumentsContext)) {
+            
+            if (argumentsContext.getRoot() == null) {
+                
+                return false;
+            }
+            if (!argumentsContext.getRoot().isDirectory()) {
+                
+                error("Root argument should point to a directory");
+                
+                return false;
+            }
+            if (!argumentsContext.getRoot().exists()) {
+
+                argumentsContext.getRoot().mkdirs();
+
+                warning("Root directory created.");
+            }
+            return true;
+        }
+        return false;
     }
 
     protected Pact getAvailablePacts(ArgumentsContext argumentsContext) {
